@@ -5,20 +5,23 @@
             [clojure.java.io :as io]
             [ring.adapter.jetty :as jetty]
             [environ.core :refer [env]]
-            [gozip.victorops :as victorops])
+            [gozip.victorops :as victorops]
+            [ring.util.response :as response])
   (:gen-class))
-
-(defn splash []
-  {:status  200
-   :headers {"Content-Type" "text/plain"}
-   :body    "Under your commands!"})
 
 (defroutes
   app
   (GET "/" []
-    (splash))
-  (POST "/alert" []
-    (victorops/alert))
+    (slurp (io/resource "form.html")))
+  (POST "/alert" req
+    (let [author (get (:params req) :author)
+          type (get (:params req) :type)
+          message (get (:params req) :message)]
+      (victorops/alert
+        {:message-type type
+         :state-message message
+         :ack-author author}))
+    (response/redirect "/"))
   (ANY "*" []
     (route/not-found (slurp (io/resource "404.html")))))
 

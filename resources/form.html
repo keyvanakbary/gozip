@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Gozip Notification System</title>
+        <style>
+            label, label span {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <form action="/alert" method="post">
+            <label>
+                <span>Alert Type:</span>
+                <select name="type">
+                    <option value="INFO">info</option>
+                    <option value="WARNING">warning</option>
+                    <option value="CRITICAL">critical</option>
+                </select>
+            </label>
+            <label>
+                <span>Author:</span>
+                <input type="text" name="author"/>
+            </label>
+            <label>
+                <span>Message:</span>
+                <textarea name="message"></textarea>
+            </label>
+            <button type="submit">Send</button>
+        </form>
+    </body>
+</html>
